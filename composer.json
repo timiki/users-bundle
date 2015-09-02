@@ -1,0 +1,22 @@
+{
+  "name"       : "timiki/users-bundle",
+  "type"       : "symfony-bundle",
+  "description": "Timiki users bundle",
+  "branches"   : ["master"],
+  "tags"       : [],
+  "keywords"   : [],
+  "authors"    : [
+    {
+      "name" : "Netesin N",
+      "email": "nikita@netesin.ru"
+    }
+  ],
+  "require"    : {
+    "symfony/symfony": "~2.7"
+  },
+  "autoload"   : {
+    "psr-4": {
+      "Timiki\\Bundle\\UsersBundle\\": ""
+    }
+  }
+}
