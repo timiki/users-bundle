@@ -70,7 +70,7 @@ class User extends StdClass implements AdvancedUserInterface
         if (!array_key_exists('last_login_at', $data)) {
             $data['last_login_at'] = DateTime::createFromFormat('Y-m-d H:i:s', '0000-00-00 00:00:00');
         }
-        if (!array_key_exists('last_login_at', $data)) {
+        if (!array_key_exists('last_login_ip', $data)) {
             $data['last_login_ip'] = '0.0.0.0';
         }
         // Check date format

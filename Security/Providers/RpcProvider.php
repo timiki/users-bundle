@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Timiki\Bundle\UsersBundle\Models\User;
 use Timiki\RpcClientCommon\Client;
+use DateTime;
 
 /**
  * Client class
@@ -87,7 +88,23 @@ class RpcProvider implements UserProviderInterface
         if ($client = $this->getClient()) {
             $result = $client->call('UserByUsername', ['username' => $username]);
             if (!empty($result->getResult()->error)) {
-                return new User($result->getResult()->result->data);
+                // Get data from rpc response
+                $data = (array)$result->getResult()->result->data;
+                // Ro DateTime
+                if (array_key_exists('created_at', $data)) {
+                    $data['created_at'] = DateTime::createFromFormat('Y-m-d H:i:s', $data['created_at']);
+                }
+                if (array_key_exists('expired_at', $data)) {
+                    $data['expired_at'] = DateTime::createFromFormat('Y-m-d H:i:s', $data['expired_at']);
+                }
+                if (array_key_exists('password_expired_at', $data)) {
+                    $data['password_expired_at'] = DateTime::createFromFormat('Y-m-d H:i:s', $data['password_expired_at']);
+                }
+                if (array_key_exists('last_login_at', $data)) {
+                    $data['last_login_at'] = DateTime::createFromFormat('Y-m-d H:i:s', $data['last_login_at']);
+                }
+
+                return new User($data);
             } else {
                 // Error call RPC
                 throw new UnsupportedUserException();
