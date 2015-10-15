@@ -30,7 +30,7 @@ class RpcProvider implements UserProviderInterface
     /**
      * Create new rpc users providers
      *
-     * @param array $options
+     * @param array     $options
      * @param Container $container
      */
     public function __construct(array $options, Container $container)
@@ -55,8 +55,33 @@ class RpcProvider implements UserProviderInterface
             $options = [];
         }
 
-        $this->client    = new Client($address, $options, $type);
-        $this->container = $container;
+        $this->client = new Client($address, $options, $type);
+        $this->setContainer($container);
+    }
+
+    /**
+     * Set container
+     *
+     * @param Container|null $container
+     * @return $this
+     */
+    public function setContainer(Container $container)
+    {
+        if ($container instanceof Container) {
+            $this->container = $container;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get container
+     *
+     * @return Container|null
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 
     /**
@@ -86,7 +111,19 @@ class RpcProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         if ($client = $this->getClient()) {
+
+            // Before run call need stop session
+            if ($this->getContainer() !== null) {
+                $this->getContainer()->get('session')->save();
+            }
+
             $result = $client->call('UserByUsername', ['username' => $username]);
+
+            // After run call need restart session
+            if ($this->getContainer() !== null) {
+                $this->getContainer()->get('session')->migrate();
+            }
+
             if (!empty($result->getResult()->error)) {
                 // Get data from rpc response
                 $data = (array)$result->getResult()->result->data;
