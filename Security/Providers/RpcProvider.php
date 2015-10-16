@@ -124,7 +124,7 @@ class RpcProvider implements UserProviderInterface
                 $this->getContainer()->get('session')->migrate();
             }
 
-            if (!empty($result->getResult()->error)) {
+            if (empty($result->getResult()->error)) {
                 // Get data from rpc response
                 $data = (array)$result->getResult()->result->data;
                 // Ro DateTime
