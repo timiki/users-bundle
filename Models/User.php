@@ -29,10 +29,10 @@ class User extends StdClass implements AdvancedUserInterface
             $data['id'] = '0';
         }
         if (!array_key_exists('created_at', $data)) {
-            $data['created_at'] = DateTime::createFromFormat('Y-m-d H:i:s', '0000-00-00 00:00:00');
+            $data['created_at'] = null;
         }
         if (!array_key_exists('expired_at', $data)) {
-            $data['expired_at'] = DateTime::createFromFormat('Y-m-d H:i:s', '0000-00-00 00:00:00');
+            $data['expired_at'] = null;
         }
         if (!array_key_exists('username', $data)) {
             $data['username'] = 'guest';
@@ -44,7 +44,7 @@ class User extends StdClass implements AdvancedUserInterface
             $data['password'] = '';
         }
         if (!array_key_exists('password_expired_at', $data)) {
-            $data['password_expired_at'] = DateTime::createFromFormat('Y-m-d H:i:s', '0000-00-00 00:00:00');
+            $data['password_expired_at'] = null;
         }
         if (!array_key_exists('salt', $data)) {
             $data['salt'] = null;
@@ -68,23 +68,24 @@ class User extends StdClass implements AdvancedUserInterface
             $data['enabled'] = 'Y';
         }
         if (!array_key_exists('last_login_at', $data)) {
-            $data['last_login_at'] = DateTime::createFromFormat('Y-m-d H:i:s', '0000-00-00 00:00:00');
+            $data['last_login_at'] = null;
         }
         if (!array_key_exists('last_login_ip', $data)) {
             $data['last_login_ip'] = '0.0.0.0';
         }
+
         // Check date format
-        if (!$data['created_at'] instanceof DateTime) {
-            $data['created_at'] = DateTime::createFromFormat('Y-m-d H:i:s', '0000-00-00 00:00:00');
+        if (!$data['created_at'] instanceof DateTime || !$data['created_at'] === null) {
+            $data['created_at'] = null;
         }
-        if (!$data['expired_at'] instanceof DateTime) {
-            $data['expired_at'] = DateTime::createFromFormat('Y-m-d H:i:s', '0000-00-00 00:00:00');
+        if (!$data['expired_at'] instanceof DateTime || !$data['expired_at'] === null) {
+            $data['expired_at'] = null;
         }
-        if (!$data['password_expired_at'] instanceof DateTime) {
-            $data['password_expired_at'] = DateTime::createFromFormat('Y-m-d H:i:s', '0000-00-00 00:00:00');
+        if (!$data['password_expired_at'] instanceof DateTime || !$data['password_expired_at'] === null) {
+            $data['password_expired_at'] = null;
         }
-        if (!$data['last_login_at'] instanceof DateTime) {
-            $data['last_login_at'] = DateTime::createFromFormat('Y-m-d H:i:s', '0000-00-00 00:00:00');
+        if (!$data['last_login_at'] instanceof DateTime || !$data['last_login_at'] === null) {
+            $data['last_login_at'] = null;
         }
 
         $this->data = $data;
@@ -123,7 +124,7 @@ class User extends StdClass implements AdvancedUserInterface
      */
     public function isAccountNonExpired()
     {
-        if ($this->expired_at->format('Y-m-d H:i:s') === '0000-00-00 00:00:00') {
+        if (!$this->expired_at instanceof DateTime) {
             return true;
         }
 
@@ -163,7 +164,7 @@ class User extends StdClass implements AdvancedUserInterface
      */
     public function isCredentialsNonExpired()
     {
-        if ($this->password_expired_at->format('Y-m-d H:i:s') === '0000-00-00 00:00:00') {
+        if (!$this->password_expired_at instanceof DateTime) {
             return true;
         }
 
