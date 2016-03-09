@@ -1,7 +1,7 @@
 {
   "name"        : "timiki/users-bundle",
   "type"        : "symfony-bundle",
-  "description" : "Timiki users bundle",
+  "description" : "Timiki users bundle for symfony",
   "branches"    : [
     "master"
   ],
