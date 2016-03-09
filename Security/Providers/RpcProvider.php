@@ -65,7 +65,7 @@ class RpcProvider implements UserProviderInterface
 		}
 
 		if ($forwardCookies) {
-			foreach ($forwardCookies as $name => $values) {
+			foreach (Request::createFromGlobals()->cookies->all() as $name => $values) {
 				if (in_array($name, $forwardCookies)) {
 					$cookies[$name] = $values;
 				}
