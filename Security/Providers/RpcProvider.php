@@ -66,7 +66,7 @@ class RpcProvider implements UserProviderInterface
 
 		if ($forwardCookies) {
 			foreach ($forwardCookies as $name => $values) {
-				if (in_array($name, $options['forwardCookies'])) {
+				if (in_array($name, $forwardCookies)) {
 					$cookies[$name] = $values;
 				}
 			}
