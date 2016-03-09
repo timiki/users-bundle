@@ -5,5 +5,5 @@ services:
 
      users.provider:
          class: Timiki\Bundle\UsersBundle\Security\UsersProvider
-         arguments: [%users.provider%, %users.options%, @service_container]
+         arguments: [%users.provider%, %users.options%, '@service_container']
 
